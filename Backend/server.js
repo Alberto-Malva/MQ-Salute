@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
@@ -20,23 +20,22 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // ... (le altre rotte e middleware che hai definito)
+
+// La dichiarazione di mongoose va qui
 const mongoose = require('mongoose');
 
-// ... (le altre variabili che hai definito)
+mongoose.connect('mongodb+srv://mqapptrial:J09DqV6uXFRBOuzC@cluster0.xy1w4uu.mongodb.net/?retryWrites=true&w=majority', {
+  // le opzioni deprecate sono state rimosse
+});
 
-mongoose.connect('mongodb+srv://medquestio:<MQmongodb>@cluster0.xy1w4uu.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  // siamo connessi!
+  console.log('Connected to MongoDB!');
 });
-const routes = require('./routes/routes');
 
 // ... (le altre configurazioni del server)
 
+const routes = require('./routes/routes'); // Assicurati che questo percorso sia corretto
 app.use('/api', routes);
-
-
-
-
